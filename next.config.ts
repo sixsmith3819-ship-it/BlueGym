@@ -2,8 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  experimental: {
-    turbo: false, // Disable Turbopack, use Webpack
+  // Use webpack for builds (Turbopack not needed in production)
+  webpack: (config) => {
+    return config;
   },
 };
 
