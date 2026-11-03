@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { X, Camera } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import jsQR from 'jsqr'
@@ -18,35 +18,7 @@ export default function QRScanner({ onScan, onClose }: QRScannerProps) {
   const streamRef = useRef<MediaStream | null>(null)
   const animationRef = useRef<number>()
 
-  useEffect(() => {
-    startScanner()
-    return () => {
-      stopScanner()
-    }
-  }, [])
-
-  const startScanner = async () => {
-    try {
-      setError('')
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' }
-      })
-      
-      streamRef.current = stream
-      
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream
-        videoRef.current.play()
-        setIsScanning(true)
-        requestAnimationFrame(tick)
-      }
-    } catch (err) {
-      console.error('Error accessing camera:', err)
-      setError('Unable to access camera. Please ensure camera permissions are granted.')
-    }
-  }
-
-  const stopScanner = () => {
+  const stopScanner = useCallback(() => {
     setIsScanning(false)
     
     if (animationRef.current) {
@@ -57,9 +29,9 @@ export default function QRScanner({ onScan, onClose }: QRScannerProps) {
       streamRef.current.getTracks().forEach(track => track.stop())
       streamRef.current = null
     }
-  }
+  }, [])
 
-  const tick = () => {
+  const tick = useCallback(() => {
     if (!videoRef.current || !canvasRef.current || !isScanning) {
       return
     }
@@ -88,7 +60,35 @@ export default function QRScanner({ onScan, onClose }: QRScannerProps) {
     }
 
     animationRef.current = requestAnimationFrame(tick)
-  }
+  }, [isScanning, onScan, stopScanner])
+
+  const startScanner = useCallback(async () => {
+    try {
+      setError('')
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' }
+      })
+      
+      streamRef.current = stream
+      
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
+        videoRef.current.play()
+        setIsScanning(true)
+        requestAnimationFrame(tick)
+      }
+    } catch (err) {
+      console.error('Error accessing camera:', err)
+      setError('Unable to access camera. Please ensure camera permissions are granted.')
+    }
+  }, [tick])
+
+  useEffect(() => {
+    startScanner()
+    return () => {
+      stopScanner()
+    }
+  }, [startScanner, stopScanner])
 
   return (
     <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
