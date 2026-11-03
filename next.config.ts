@@ -2,10 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  // Use webpack for builds (Turbopack not needed in production)
-  webpack: (config) => {
-    return config;
-  },
+  // Empty turbopack config to use default Turbopack (works fine with Tailwind v3)
+  turbopack: {},
 };
 
 export default nextConfig;
