@@ -18,20 +18,23 @@ export async function GET(request: NextRequest) {
       .from('members')
       .select('*', { count: 'exact', head: true })
 
-    // Get active members
-    const { count: activeMembers } = await supabaseAdmin
+    // Get registered but unpaid members (no active subscription)
+    const { data: activeMembersList } = await supabaseAdmin
       .from('members')
-      .select('*', { count: 'exact', head: true })
+      .select('id')
       .eq('is_active', true)
 
-    // Get members with active subscriptions
+    const activeMemberIds = activeMembersList?.map(m => m.id) || []
+    const registeredUnpaid = (totalMembers || 0) - activeMemberIds.length
+
+    // Get members with active subscriptions (the real "active" members)
     const { data: activeSubscriptions } = await supabaseAdmin
       .from('subscriptions')
       .select('member_id')
       .gte('end_date', today)
       .eq('is_active', true)
 
-    const activeMemberships = activeSubscriptions?.length || 0
+    const activeMembers = activeSubscriptions?.length || 0
 
     // Get expiring soon (within 3 days)
     const threeDaysFromNow = new Date()
@@ -100,8 +103,8 @@ export async function GET(request: NextRequest) {
       data: {
         members: {
           total: totalMembers || 0,
-          active: activeMembers || 0,
-          activeMemberships: activeMemberships,
+          active: activeMembers, // Members with valid subscriptions
+          registeredUnpaid: registeredUnpaid, // Registered but haven't paid yet
           expiringSoon: expiringSoonCount,
           expired: expiredCount,
         },

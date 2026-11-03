@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     const memberNumber = String((monthlyMembers?.length || 0) + 1).padStart(4, '0')
     const member_id = `BGM${yearMonth}${memberNumber}`
 
-    // Create member
+    // Create member (inactive until first payment)
     const { data, error } = await supabaseAdmin
       .from('members')
       .insert({
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
         full_name,
         phone_number,
         registration_date: today.toISOString().split('T')[0],
-        is_active: true,
+        is_active: false, // Will be set to true when first payment is recorded
       })
       .select()
       .single()

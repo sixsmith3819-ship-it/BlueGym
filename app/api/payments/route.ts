@@ -171,6 +171,12 @@ export async function POST(request: NextRequest) {
       console.error('Error creating subscription:', subscriptionError)
     }
 
+    // Activate member (set is_active = true) when they make a payment
+    await supabaseAdmin
+      .from('members')
+      .update({ is_active: true })
+      .eq('id', member_id)
+
     return NextResponse.json(
       {
         data: {

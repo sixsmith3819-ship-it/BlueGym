@@ -91,8 +91,8 @@ export default function DashboardPage() {
           color="green"
         />
         <StatCard
-          label="Expiring Soon"
-          value={stats?.members?.expiringSoon || 0}
+          label="Registered (Unpaid)"
+          value={stats?.members?.registeredUnpaid || 0}
           icon={Clock}
           color="orange"
         />
@@ -182,6 +182,12 @@ export default function DashboardPage() {
               <p className="text-sm text-gray-300 mb-1">Total Revenue</p>
               <p className="text-2xl font-bold">
                 ${stats?.revenue?.total?.toFixed(2) || '0.00'}
+              </p>
+            </div>
+            <div className="p-4 bg-gradient-to-br from-warning/20 to-yellow-500/20 rounded-lg">
+              <p className="text-sm text-gray-300 mb-1">Expiring Soon</p>
+              <p className="text-2xl font-bold text-warning">
+                {stats?.members?.expiringSoon || 0}
               </p>
             </div>
           </div>
