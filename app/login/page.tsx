@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Button from '@/components/ui/Button'
 import { Mail, Lock, AlertCircle, CheckCircle, UserPlus, KeyRound } from 'lucide-react'
 
 type AuthMode = 'login' | 'signup' | 'forgot'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [mode, setMode] = useState<AuthMode>('login')
@@ -337,5 +337,28 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="fixed inset-0 aurora-glow"></div>
+        <div className="relative z-10 w-full max-w-md">
+          <div className="glass p-8">
+            <div className="text-center">
+              <div className="w-16 h-16 rounded-xl bg-gradient-aurora flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <span className="text-3xl">💪</span>
+              </div>
+              <h1 className="text-3xl font-bold mb-2">BLUE GYM</h1>
+              <p className="text-gray-400">Loading...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   )
 }
