@@ -2,8 +2,12 @@ import { notFound } from 'next/navigation'
 import { supabaseAdmin } from '@/lib/supabase-server'
 import VerificationDisplay from '@/components/verification/VerificationDisplay'
 
-export default async function VerifyPage({ params }: { params: { token: string } }) {
-  const { token } = params
+interface VerifyPageProps {
+  params: Promise<{ token: string }>
+}
+
+export default async function VerifyPage({ params }: VerifyPageProps) {
+  const { token } = await params
 
   // Fetch payment by verification token
   const { data: payment, error } = await supabaseAdmin
@@ -22,6 +26,7 @@ export default async function VerifyPage({ params }: { params: { token: string }
     .single()
 
   if (error || !payment) {
+    console.error('Payment verification error:', error)
     return notFound()
   }
 
