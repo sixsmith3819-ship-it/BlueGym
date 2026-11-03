@@ -16,7 +16,7 @@ export default function MembersList({ refreshTrigger = 0 }: MembersListProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
-  const [filterActive, setFilterActive] = useState<boolean | null>(true)
+  const [filterActive, setFilterActive] = useState<boolean | null>(null) // Show all members by default
 
   const fetchMembers = async () => {
     try {
@@ -26,8 +26,13 @@ export default function MembersList({ refreshTrigger = 0 }: MembersListProps) {
       const params = new URLSearchParams()
       if (search) params.append('search', search)
       if (filterActive !== null) params.append('isActive', String(filterActive))
+      
+      // Add cache-busting parameter to get fresh data
+      params.append('_', Date.now().toString())
 
-      const response = await fetch(`/api/members?${params}`)
+      const response = await fetch(`/api/members?${params}`, {
+        cache: 'no-store'
+      })
       const result = await response.json()
 
       if (!response.ok) {
