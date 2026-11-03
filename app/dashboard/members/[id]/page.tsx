@@ -305,7 +305,7 @@ export default function MemberDetailPage({ params }: MemberDetailPageProps) {
                         <CreditCard className="text-success" size={20} />
                       </div>
                       <div>
-                        <p className="font-semibold">K{payment.amount_paid.toFixed(2)}</p>
+                        <p className="font-semibold">${payment.amount_paid.toFixed(2)}</p>
                         <p className="text-sm text-gray-400">
                           {new Date(payment.payment_date).toLocaleDateString('en-US', {
                             year: 'numeric',
@@ -337,7 +337,7 @@ export default function MemberDetailPage({ params }: MemberDetailPageProps) {
             <div className="space-y-4">
               <div>
                 <p className="text-sm text-gray-400 mb-1">Total Paid</p>
-                <p className="text-2xl font-bold text-success">K{totalPaid.toFixed(2)}</p>
+                <p className="text-2xl font-bold text-success">${totalPaid.toFixed(2)}</p>
               </div>
               
               <div>
