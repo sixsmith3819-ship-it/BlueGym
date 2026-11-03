@@ -16,7 +16,7 @@ export default function QRScanner({ onScan, onClose }: QRScannerProps) {
   const [error, setError] = useState('')
   const [isScanning, setIsScanning] = useState(false)
   const streamRef = useRef<MediaStream | null>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | undefined>(undefined)
 
   const stopScanner = useCallback(() => {
     setIsScanning(false)
