@@ -12,25 +12,7 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  @apply bg-bg-darker text-white font-sans;
-  background: linear-gradient(135deg, #050812 0%, #0a0e27 100%);
-  min-height: 100vh;
-}
-
-/* Glassmorphism Effect */
-.glass {
-  @apply backdrop-blur-md bg-white/10 border border-white/20 rounded-lg;
-  transition: all 0.3s ease;
-}
-
-.glass:hover {
-  @apply border-white/30 bg-white/[0.12];
-}
-
-.glass-dark {
-  @apply backdrop-blur-md bg-black/30 border border-white/10 rounded-lg;
-}
+/* Note: Body and glass styles are defined in the theme section below */
 
 /* Gradient Effects */
 .aurora-glow {
