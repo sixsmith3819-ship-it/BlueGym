@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Button from '@/components/ui/Button'
 import { Mail, Lock, AlertCircle, CheckCircle, UserPlus, KeyRound } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 type AuthMode = 'login' | 'signup' | 'forgot'
 
 function LoginForm() {
