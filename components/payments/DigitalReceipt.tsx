@@ -201,7 +201,7 @@ export default function DigitalReceipt({ payment, member }: DigitalReceiptProps)
           <Printer size={20} className="mr-2" />
           Print
         </Button>
-        {navigator.share && (
+        {typeof navigator !== 'undefined' && navigator.share && (
           <Button
             variant="secondary"
             size="lg"

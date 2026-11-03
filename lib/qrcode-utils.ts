@@ -10,7 +10,6 @@ export async function generateQRCodeDataURL(
   value: string,
   options?: {
     errorCorrectionLevel?: 'L' | 'M' | 'Q' | 'H'
-    type?: 'image/png' | 'image/jpeg' | 'image/webp'
     quality?: number
     margin?: number
     width?: number
@@ -23,7 +22,6 @@ export async function generateQRCodeDataURL(
   try {
     const qrOptions = {
       errorCorrectionLevel: options?.errorCorrectionLevel || 'M',
-      type: options?.type || 'image/png',
       quality: options?.quality || 0.92,
       margin: options?.margin || 1,
       width: options?.width || 300,
@@ -51,8 +49,6 @@ export async function generateQRCodeCanvas(value: string): Promise<HTMLCanvasEle
     const canvas = document.createElement('canvas')
     await QRCode.toCanvas(canvas, value, {
       errorCorrectionLevel: 'M',
-      type: 'image/png',
-      quality: 0.92,
       margin: 1,
       width: 300,
       color: {
