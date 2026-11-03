@@ -8,6 +8,8 @@ import ExpiringMemberships from '@/components/dashboard/ExpiringMemberships'
 import { StatCardSkeleton } from '@/components/ui/Skeleton'
 import { Users, TrendingUp, Clock, DollarSign, Calendar, CreditCard } from 'lucide-react'
 import Link from 'next/link'
+
+export const dynamic = 'force-dynamic'
 import Button from '@/components/ui/Button'
 
 export default function DashboardPage() {
