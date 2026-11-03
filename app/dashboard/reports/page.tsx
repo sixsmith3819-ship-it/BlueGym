@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import { Download, Calendar, DollarSign, Users, TrendingUp } from 'lucide-react'
 import Button from '@/components/ui/Button'
 
+export const dynamic = 'force-dynamic'
+
 export default function ReportsPage() {
   const [dateRange, setDateRange] = useState({
     start: new Date().toISOString().split('T')[0],

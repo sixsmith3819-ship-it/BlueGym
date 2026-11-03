@@ -6,6 +6,8 @@ import Button from '@/components/ui/Button'
 import QRScanner from '@/components/scanner/QRScanner'
 import { useRouter } from 'next/navigation'
 
+export const dynamic = 'force-dynamic'
+
 export default function ScanQRPage() {
   const router = useRouter()
   const [manualToken, setManualToken] = useState('')

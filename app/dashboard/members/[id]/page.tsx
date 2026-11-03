@@ -24,6 +24,8 @@ interface MemberDetailPageProps {
   params: Promise<{ id: string }>
 }
 
+export const dynamic = 'force-dynamic'
+
 export default function MemberDetailPage({ params }: MemberDetailPageProps) {
   const router = useRouter()
   const [member, setMember] = useState<Member | null>(null)

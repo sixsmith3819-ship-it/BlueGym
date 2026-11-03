@@ -5,6 +5,8 @@ import PaymentRecordForm from '@/components/payments/PaymentRecordForm'
 import DigitalReceipt from '@/components/payments/DigitalReceipt'
 import { ArrowLeft } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default function PaymentsPage() {
   const [paymentData, setPaymentData] = useState<any>(null)
   const [memberData, setMemberData] = useState<any>(null)

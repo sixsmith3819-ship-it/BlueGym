@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import MemberRegistrationForm from '@/components/members/MemberRegistrationForm'
 import MembersList from '@/components/members/MembersList'
 
+export const dynamic = 'force-dynamic'
+
 export default function MembersPage() {
   const [refreshTrigger, setRefreshTrigger] = useState(0)
 

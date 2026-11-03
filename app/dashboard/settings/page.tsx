@@ -14,6 +14,8 @@ import {
   RefreshCw
 } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default function SettingsPage() {
   const { showToast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
