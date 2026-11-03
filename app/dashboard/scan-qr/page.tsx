@@ -3,11 +3,15 @@
 import React, { useState } from 'react'
 import { QrCode, Search, AlertCircle } from 'lucide-react'
 import Button from '@/components/ui/Button'
+import QRScanner from '@/components/scanner/QRScanner'
+import { useRouter } from 'next/navigation'
 
 export default function ScanQRPage() {
+  const router = useRouter()
   const [manualToken, setManualToken] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showScanner, setShowScanner] = useState(false)
 
   const handleManualVerify = () => {
     if (!manualToken.trim()) {
@@ -20,7 +24,20 @@ export default function ScanQRPage() {
   }
 
   const handleScanQR = () => {
-    alert('QR Scanner will be available in browser with camera access. For now, use manual verification.')
+    setShowScanner(true)
+  }
+
+  const handleQRScanned = (data: string) => {
+    setShowScanner(false)
+    
+    // Extract token from URL if it's a full URL
+    let token = data
+    if (data.includes('/verify/')) {
+      token = data.split('/verify/')[1]
+    }
+    
+    // Navigate to verification page
+    router.push(`/verify/${token}`)
   }
 
   return (
@@ -125,6 +142,14 @@ export default function ScanQRPage() {
           </div>
         </div>
       </div>
+
+      {/* QR Scanner Modal */}
+      {showScanner && (
+        <QRScanner
+          onScan={handleQRScanned}
+          onClose={() => setShowScanner(false)}
+        />
+      )}
     </div>
   )
 }
