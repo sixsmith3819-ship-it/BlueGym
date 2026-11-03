@@ -29,11 +29,14 @@ export default function PaymentRecordForm({ onSuccess, preSelectedMemberId }: Pa
     end_date: string
   } | null>(null)
 
-  // Fetch active members
+  // Fetch all members (both active and inactive)
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await fetch('/api/members?isActive=true')
+        // Fetch all members, add cache-busting parameter
+        const response = await fetch(`/api/members?_=${Date.now()}`, {
+          cache: 'no-store'
+        })
         const result = await response.json()
         if (response.ok) {
           setMembers(result.data || [])
@@ -239,7 +242,7 @@ export default function PaymentRecordForm({ onSuccess, preSelectedMemberId }: Pa
             <option value="">Choose a member...</option>
             {members.map((member) => (
               <option key={member.id} value={member.id} className="bg-surface text-white">
-                {member.full_name} - {member.member_id}
+                {member.full_name} - {member.member_id} {member.is_active ? '' : '(First Payment)'}
               </option>
             ))}
           </select>
