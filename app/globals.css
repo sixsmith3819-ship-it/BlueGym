@@ -218,3 +218,84 @@ textarea:focus-visible {
 .stagger-animation > *:nth-child(5) { animation-delay: 0.25s; }
 .stagger-animation > *:nth-child(6) { animation-delay: 0.3s; }
 
+
+
+/* ========================================
+   LIGHT/DARK MODE THEME
+   ======================================== */
+
+/* Light Mode Overrides */
+body {
+  @apply bg-gray-50 dark:bg-bg-darker text-gray-900 dark:text-white;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+body.dark {
+  background: linear-gradient(135deg, #050812 0%, #0a0e27 100%);
+}
+
+/* Glass effect for light mode */
+.glass {
+  @apply backdrop-blur-md bg-white/90 dark:bg-white/10 border border-gray-200 dark:border-white/20;
+}
+
+.glass:hover {
+  @apply border-gray-300 dark:border-white/30 bg-white dark:bg-white/[0.12];
+}
+
+.glass-dark {
+  @apply backdrop-blur-md bg-gray-100/90 dark:bg-black/30 border border-gray-200 dark:border-white/10;
+}
+
+/* Text colors */
+.text-primary {
+  @apply text-blue-600 dark:text-blue-500;
+}
+
+.text-secondary {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+/* Backgrounds */
+.bg-bg-darker {
+  @apply bg-gray-50 dark:bg-slate-900;
+}
+
+/* Aurora glow for light mode */
+.aurora-glow {
+  background: linear-gradient(135deg, #0066FF 0%, #00D4FF 50%, #9D4EDD 100%);
+  opacity: 0.05;
+}
+
+body.dark .aurora-glow {
+  opacity: 0.1;
+}
+
+/* Sidebar for light mode */
+aside {
+  @apply bg-white dark:bg-gray-800/50;
+}
+
+/* Cards */
+.card {
+  @apply bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700;
+}
+
+/* Inputs */
+input, textarea, select {
+  @apply bg-white dark:bg-white/5 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white;
+}
+
+input::placeholder, textarea::placeholder {
+  @apply text-gray-500 dark:text-gray-500;
+}
+
+/* Buttons */
+button {
+  @apply text-gray-900 dark:text-white;
+}
+
+/* Stat cards */
+.stat-card {
+  @apply bg-white/95 dark:bg-white/10;
+}
