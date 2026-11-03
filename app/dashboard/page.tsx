@@ -17,20 +17,25 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [revenuePeriod, setRevenuePeriod] = useState<'daily' | 'weekly' | 'monthly'>('daily')
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch('/api/dashboard/stats')
-        const result = await response.json()
-        if (response.ok) {
-          setStats(result.data)
-        }
-      } catch (error) {
-        console.error('Error fetching dashboard stats:', error)
-      } finally {
-        setIsLoading(false)
+  const fetchStats = async () => {
+    try {
+      setIsLoading(true)
+      // Add cache-busting parameter
+      const response = await fetch(`/api/dashboard/stats?_=${Date.now()}`, {
+        cache: 'no-store'
+      })
+      const result = await response.json()
+      if (response.ok) {
+        setStats(result.data)
       }
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error)
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchStats()
   }, [])
 
@@ -78,16 +83,12 @@ export default function DashboardPage() {
           value={stats?.members?.total || 0}
           icon={Users}
           color="blue"
-          change="+2%"
-          trend="up"
         />
         <StatCard
           label="Active Members"
-          value={stats?.members?.activeMemberships || 0}
+          value={stats?.members?.active || 0}
           icon={TrendingUp}
           color="green"
-          change="+1%"
-          trend="up"
         />
         <StatCard
           label="Expiring Soon"
@@ -100,8 +101,6 @@ export default function DashboardPage() {
           value={`$${stats?.revenue?.thisMonth?.toFixed(2) || '0.00'}`}
           icon={DollarSign}
           color="purple"
-          change="+8%"
-          trend="up"
         />
       </div>
 

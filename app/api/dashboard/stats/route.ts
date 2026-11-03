@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-server'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 /**
  * GET /api/dashboard/stats
  * Fetch dashboard statistics
@@ -112,7 +115,14 @@ export async function GET(request: NextRequest) {
         },
         recentPayments: recentPayments || [],
       },
-    }, { status: 200 })
+    }, { 
+      status: 200,
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
+    })
   } catch (error) {
     console.error('Error fetching dashboard stats:', error)
     return NextResponse.json(
