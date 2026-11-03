@@ -166,7 +166,7 @@ export default function MemberDetailPage({ params }: MemberDetailPageProps) {
     return null
   }
 
-  const totalPaid = payments.reduce((sum, payment) => sum + payment.amount, 0)
+  const totalPaid = payments.reduce((sum, payment) => sum + payment.amount_paid, 0)
   const lastPayment = payments[0]
 
   return (
@@ -308,7 +308,7 @@ export default function MemberDetailPage({ params }: MemberDetailPageProps) {
                         <CreditCard className="text-success" size={20} />
                       </div>
                       <div>
-                        <p className="font-semibold">K{payment.amount.toFixed(2)}</p>
+                        <p className="font-semibold">K{payment.amount_paid.toFixed(2)}</p>
                         <p className="text-sm text-gray-400">
                           {new Date(payment.payment_date).toLocaleDateString('en-US', {
                             year: 'numeric',

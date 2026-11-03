@@ -3,6 +3,8 @@ export type Member = {
   member_id: string
   full_name: string
   phone_number: string
+  email?: string
+  address?: string
   registration_date: string
   is_active: boolean
   created_at: string
@@ -19,6 +21,7 @@ export type Payment = {
   payment_date: string
   subscription_start_date: string
   subscription_end_date: string
+  subscription_id?: string
   payment_status: 'pending' | 'paid' | 'cancelled'
   created_at: string
 }
