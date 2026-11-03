@@ -44,13 +44,13 @@ export default function MemberDetailPage({ params }: MemberDetailPageProps) {
   useEffect(() => {
     if (memberId) {
       fetchMemberDetails()
-      fetchMemberPayments()
     }
   }, [memberId])
 
   const fetchMemberDetails = async () => {
     try {
       setIsLoading(true)
+      setIsLoadingPayments(true)
       setError('')
 
       const response = await fetch(`/api/members/${memberId}`)
@@ -61,30 +61,27 @@ export default function MemberDetailPage({ params }: MemberDetailPageProps) {
         return
       }
 
-      setMember(result.data)
+      // API returns { data: { member, payments, subscription } }
+      if (result.data.member) {
+        setMember(result.data.member)
+        setPayments(result.data.payments || [])
+      } else {
+        // Fallback for direct data format
+        setMember(result.data)
+      }
     } catch (err) {
       setError('An error occurred while loading member details')
       console.error('Fetch member error:', err)
     } finally {
       setIsLoading(false)
+      setIsLoadingPayments(false)
     }
   }
 
   const fetchMemberPayments = async () => {
-    try {
-      setIsLoadingPayments(true)
-
-      const response = await fetch(`/api/payments?memberId=${memberId}`)
-      const result = await response.json()
-
-      if (response.ok) {
-        setPayments(result.data || [])
-      }
-    } catch (err) {
-      console.error('Fetch payments error:', err)
-    } finally {
-      setIsLoadingPayments(false)
-    }
+    // Payments are now fetched with member details
+    // This function is kept for backwards compatibility
+    return
   }
 
   const handleDelete = async () => {
@@ -259,11 +256,11 @@ export default function MemberDetailPage({ params }: MemberDetailPageProps) {
                 <div>
                   <p className="text-sm text-gray-400">Registration Date</p>
                   <p className="font-semibold">
-                    {new Date(member.registration_date).toLocaleDateString('en-US', {
+                    {member.registration_date ? new Date(member.registration_date).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'
-                    })}
+                    }) : 'Not set'}
                   </p>
                 </div>
               </div>
