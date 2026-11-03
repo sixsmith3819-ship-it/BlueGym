@@ -3,15 +3,12 @@
 import React, { useState } from 'react'
 import { QrCode, Search, AlertCircle } from 'lucide-react'
 import Button from '@/components/ui/Button'
-import QRScanner from '@/components/scanner/QRScanner'
 import { useRouter } from 'next/navigation'
 
 export default function ScanQRPage() {
   const router = useRouter()
   const [manualToken, setManualToken] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-  const [showScanner, setShowScanner] = useState(false)
 
   const handleManualVerify = () => {
     if (!manualToken.trim()) {
@@ -20,24 +17,11 @@ export default function ScanQRPage() {
     }
 
     // Redirect to verification page
-    window.location.href = `/verify/${manualToken.trim()}`
+    router.push(`/verify/${manualToken.trim()}`)
   }
 
   const handleScanQR = () => {
-    setShowScanner(true)
-  }
-
-  const handleQRScanned = (data: string) => {
-    setShowScanner(false)
-    
-    // Extract token from URL if it's a full URL
-    let token = data
-    if (data.includes('/verify/')) {
-      token = data.split('/verify/')[1]
-    }
-    
-    // Navigate to verification page
-    router.push(`/verify/${token}`)
+    alert('QR Scanner requires HTTPS to access camera. Please use the manual verification for now, or access via your deployed Vercel URL.')
   }
 
   return (
@@ -142,14 +126,6 @@ export default function ScanQRPage() {
           </div>
         </div>
       </div>
-
-      {/* QR Scanner Modal */}
-      {showScanner && (
-        <QRScanner
-          onScan={handleQRScanned}
-          onClose={() => setShowScanner(false)}
-        />
-      )}
     </div>
   )
 }
