@@ -121,7 +121,7 @@ export async function PUT(
 
 /**
  * DELETE /api/members/[id]
- * Deactivate a member (soft delete)
+ * Permanently delete a member and all related data
  */
 export async function DELETE(
   request: NextRequest,
@@ -130,22 +130,24 @@ export async function DELETE(
   try {
     const { id } = await params
 
-    // Soft delete by deactivating
-    const { data, error } = await supabaseAdmin
+    // Hard delete - permanently remove member
+    // Note: Subscriptions and payments will be cascade deleted due to foreign key constraints
+    const { error } = await supabaseAdmin
       .from('members')
-      .update({ is_active: false, updated_at: new Date().toISOString() })
+      .delete()
       .eq('id', id)
-      .select()
-      .single()
 
     if (error) {
       return NextResponse.json(
-        { error: 'Member not found' },
-        { status: 404 }
+        { error: 'Failed to delete member' },
+        { status: 400 }
       )
     }
 
-    return NextResponse.json({ data }, { status: 200 })
+    return NextResponse.json(
+      { message: 'Member deleted successfully' },
+      { status: 200 }
+    )
   } catch (error) {
     console.error('Error deleting member:', error)
     return NextResponse.json(
